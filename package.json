@@ -1,0 +1,63 @@
+{
+  "name": "react-native-picker-horizontal",
+  "version": "0.1.0",
+  "description": "React native value picker with horizontal scroll",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "react-native": "src/index.tsx",
+  "types": "lib/typescript/src/index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "author": "Andrey Shelikhov",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "bob build",
+    "test": "jest"
+  },
+  "keywords": [
+    "react-native",
+    "value-picker",
+    "picker",
+    "horisontal-picker",
+    "react-native-picker-horisontal"
+  ],
+  "jest": {
+    "preset": "jest-expo",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "~7.13.14",
+    "@types/react": "~16.9.35",
+    "@types/react-native": "~0.63.2",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-preset-expo": "^8.3.0",
+    "jest-expo": "^38.0.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native-builder-bob": "^0.18.1",
+    "react-native-debugger-open": "^0.3.25",
+    "react-native-web": "^0.15.6",
+    "typescript": "~4.2.3"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ]
+}
