@@ -12,17 +12,15 @@ import {
 
 
 export interface Props extends ScrollViewProps {
-  style: object,
   data: any[],
-  selectedValue: number,
   renderItem: (item: any, index: number) => ReactNode,
   itemWidth: number,
-  initialValue: number,
-  snapTimeout?: number,
+  initialIndex?: number,
   onChange?: (position: number) => void,
-  mark?: (position: number) => ReactNode,
+  mark?: ReactNode,
   interpolateScale?: (index: number, itemWidth: number) => Animated.InterpolationConfigType,
   interpolateOpacity?: (index: number, itemWidth: number) => Animated.InterpolationConfigType
+  style?: object
 }
 
 
@@ -41,14 +39,14 @@ export default (props: Props) => {
 
   const onLayoutScrollView = (e: LayoutChangeEvent) => {
     const {width} = e.nativeEvent.layout;
-    const {itemWidth, onLayout, selectedValue} = props;
+    const {itemWidth, onLayout, initialIndex} = props;
     setPaddingSide((width - itemWidth) / 2);
 
     if (onLayout != null) {
       onLayout(e);
     }
-    if (selectedValue) {
-      scrollToPosition(selectedValue);
+    if (initialIndex) {
+      scrollToPosition(initialIndex);
     }
   }
 
@@ -84,7 +82,7 @@ export default (props: Props) => {
       <View style={{
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'
       }}>
-        {props.mark || DefaultMark()}
+        {props.mark || DefaultMark}
       </View>
       <Animated.FlatList
         ref={process.env.NODE_ENV === 'test' ? null : flatListRef}
@@ -125,13 +123,12 @@ export default (props: Props) => {
   );
 }
 
-const DefaultMark = () => (
+const DefaultMark =
   <Text style={{
     color: "black",
     fontWeight: "bold",
     paddingTop: 60
-  }}>^</Text>
-);
+  }}>^</Text>;
 
 const defaultScaleConfig = (index: number, itemWidth: number) => ({
   inputRange: [

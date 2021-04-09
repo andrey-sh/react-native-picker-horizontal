@@ -18,7 +18,7 @@ const tree = create(<ValuePicker
   data={Items}
   renderItem={rednerItem}
   itemWidth={50}
-  selectedValue={1}
+  initialIndex={1}
   onChange={mockCallback}
 />).toJSON();
 
