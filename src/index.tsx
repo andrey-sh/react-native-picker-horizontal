@@ -17,7 +17,7 @@ export interface Props extends ScrollViewProps {
   itemWidth: number,
   initialIndex?: number,
   onChange?: (position: number) => void,
-  mark?: ReactNode,
+  mark?: ReactNode | null,
   interpolateScale?: (index: number, itemWidth: number) => Animated.InterpolationConfigType,
   interpolateOpacity?: (index: number, itemWidth: number) => Animated.InterpolationConfigType
   style?: object
@@ -82,7 +82,7 @@ export default (props: Props) => {
       <View style={{
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'
       }}>
-        {props.mark || DefaultMark}
+        {typeof props.mark === "undefined" ? DefaultMark : props.mark}
       </View>
       <Animated.FlatList
         ref={process.env.NODE_ENV === 'test' ? null : flatListRef}
