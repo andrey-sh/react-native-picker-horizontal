@@ -20,7 +20,8 @@ export interface Props extends ScrollViewProps {
   mark?: ReactNode | null,
   interpolateScale?: (index: number, itemWidth: number) => Animated.InterpolationConfigType,
   interpolateOpacity?: (index: number, itemWidth: number) => Animated.InterpolationConfigType
-  style?: object
+  style?: object,
+  passToFlatList?: object
 }
 
 
@@ -30,6 +31,7 @@ export default (props: Props) => {
     renderItem,
     itemWidth,
     style = {},
+    passToFlatList = {},
     ...passedProps
   } = props;
 
@@ -97,6 +99,7 @@ export default (props: Props) => {
         contentContainerStyle={{
           paddingHorizontal: paddingSide, display: "flex", alignItems: "center", backgroundColor: 'transparent'
         }}
+        {...passToFlatList}
         renderItem={({item, index}) => {
           const {itemWidth, interpolateScale, interpolateOpacity} = props;
 
