@@ -20,6 +20,6 @@ jobs:
       - name: build and test
         run: |
           npm i
-          npm test
+          npm test -- -u
         env:
           CI: true
