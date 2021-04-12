@@ -1,4 +1,5 @@
 # react-native-picker-horizontal
+![Node.js CI](https://github.com/andrey-sh/react-native-picker-horizontal/workflows/Node.js%20CI/badge.svg?branch=main)
 
 A picker component for React Native. Allows to select the item from horizontal scrolling container with custom animations.
 
