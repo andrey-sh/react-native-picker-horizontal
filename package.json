@@ -13,12 +13,14 @@
     "!**/__fixtures__",
     "!**/__mocks__"
   ],
-  "author": "Andrey Shelikhov",
-  "license": "MIT",
   "scripts": {
     "prepare": "bob build",
     "test": "npm run validate && jest",
     "validate": "tsc --project ./ --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrey-sh/react-native-picker-horizontal.git"
   },
   "keywords": [
     "react-native",
@@ -27,6 +29,12 @@
     "horisontal-picker",
     "react-native-picker-horisontal"
   ],
+  "author": "Andrey Shelikhov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrey-sh/react-native-picker-horizontal/issues"
+  },
+  "homepage": "https://github.com/andrey-sh/react-native-picker-horizontal",
   "jest": {
     "preset": "jest-expo",
     "modulePathIgnorePatterns": [
