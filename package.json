@@ -17,7 +17,8 @@
   "license": "MIT",
   "scripts": {
     "prepare": "bob build",
-    "test": "jest"
+    "test": "npm run validate && jest",
+    "validate": "tsc --project ./ --noEmit"
   },
   "keywords": [
     "react-native",
