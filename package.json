@@ -1,6 +1,6 @@
 {
   "name": "react-native-picker-horizontal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React native value picker with horizontal scroll",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
