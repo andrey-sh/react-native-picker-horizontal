@@ -7,7 +7,8 @@ import {
   LayoutChangeEvent,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  Animated
+  Animated,
+  Platform
 } from 'react-native';
 
 
@@ -32,10 +33,14 @@ export default (props: Props) => {
     itemWidth,
     style = {},
     passToFlatList = {},
+    onChange,
     ...passedProps
   } = props;
 
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  let fixed = React.useRef(false).current;
+  let timeoutFixPosition = React.useRef(setTimeout(() => {
+  }, 0)).current;
   const flatListRef = React.useRef(null);
   let [paddingSide, setPaddingSide] = useState(0);
 
@@ -48,35 +53,52 @@ export default (props: Props) => {
       onLayout(e);
     }
     if (initialIndex) {
-      scrollToPosition(initialIndex);
+      if (flatListRef && flatListRef.current) {
+        // @ts-ignore
+        flatListRef.current.scrollToIndex({animated: false, index: "" + initialIndex});
+      }
     }
   }
 
-  const onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const x = e.nativeEvent.contentOffset.x;
+  const onMomentumScrollBegin = () => {
+    fixed = false;
+    clearTimeout(timeoutFixPosition);
+  }
+
+  const onMomentumScrollEnd = ({nativeEvent: {contentOffset: {x}}}: NativeSyntheticEvent<NativeScrollEvent>) => {
     const selected = Math.round(x / itemWidth);
     changePosition(selected);
-    scrollToPosition(selected);
   }
 
-  const scrollToPosition = (position: number) => {
-    if (flatListRef && flatListRef.current) {
-      // @ts-ignore
-      flatListRef.current.scrollToIndex({animated: true, index: "" + position});
-    }
+  const onScrollBeginDrag = () => {
+    fixed = false;
+    clearTimeout(timeoutFixPosition);
+  }
+
+  const onScrollEndDrag = () => {
+    clearTimeout(timeoutFixPosition);
   }
 
   const changePosition = (position: number) => {
-    const {onChange} = props;
-    if (onChange != null) {
-      if (position < 1) {
-        onChange(0);
-      } else if (position > props.data.length) {
-        onChange(props.data.length - 1);
-      } else {
-        onChange(position);
-      }
+    let fixedPosition = position;
+    if (position < 0) {
+      fixedPosition = 0;
     }
+    if (position > data.length - 1) {
+      fixedPosition = data.length - 1;
+    }
+
+    if (onChange) {
+      onChange(fixedPosition);
+    }
+    clearTimeout(timeoutFixPosition);
+    timeoutFixPosition = setTimeout(function () {
+      if (!fixed && flatListRef && flatListRef.current) {
+        fixed = true;
+        // @ts-ignore
+        flatListRef.current.scrollToIndex({animated: true, index: "" + fixedPosition});
+      }
+    }, Platform.OS == "ios" ? 50 : 0);
   }
 
   return (
@@ -94,11 +116,14 @@ export default (props: Props) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={data}
-        keyExtractor={(_item, index) => index.toString()}
+        onMomentumScrollBegin={onMomentumScrollBegin}
         onMomentumScrollEnd={onMomentumScrollEnd}
+        onScrollBeginDrag={onScrollBeginDrag}
+        onScrollEndDrag={onScrollEndDrag}
         contentContainerStyle={{
           paddingHorizontal: paddingSide, display: "flex", alignItems: "center", backgroundColor: 'transparent'
         }}
+        initialNumToRender={30}
         {...passToFlatList}
         renderItem={({item, index}) => {
           const {itemWidth, interpolateScale, interpolateOpacity} = props;
@@ -113,15 +138,19 @@ export default (props: Props) => {
 
           return (
             <TouchableWithoutFeedback onPress={() => {
-              changePosition(index);
-              scrollToPosition(index);
+              if (flatListRef && flatListRef.current) {
+                fixed = true;
+                // @ts-ignore
+                flatListRef.current.scrollToIndex({animated: true, index: "" + index});
+              }
+              if (onChange) { onChange(index); }
             }} key={index}>
               <Animated.View style={{transform: [{scale}], opacity}}>
                 {renderItem(item, index)}
               </Animated.View>
             </TouchableWithoutFeedback>
           )
-        }}/>
+        }} />
     </View>
   );
 }
