@@ -116,6 +116,7 @@ export default (props: Props) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={data}
+        keyExtractor={(_item, index) => index.toString()}
         onMomentumScrollBegin={onMomentumScrollBegin}
         onMomentumScrollEnd={onMomentumScrollEnd}
         onScrollBeginDrag={onScrollBeginDrag}
