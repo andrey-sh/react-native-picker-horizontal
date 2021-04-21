@@ -4,6 +4,7 @@
 A picker component for React Native. Allows to select the item from horizontal scrolling container with custom animations.
 
 ![Picker example](https://github.com/andrey-sh/react-native-picker-horizontal/blob/master/screen1.gif)
+![Picker example](https://github.com/andrey-sh/react-native-picker-horizontal/blob/master/screen2.gif)
 
 ## Getting Started
 
