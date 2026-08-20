@@ -66,7 +66,7 @@ export default (props: Props) => {
   }
 
   const onMomentumScrollEnd = ({nativeEvent: {contentOffset: {x}}}: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const selected = Math.round(x / itemWidth);
+    const selected = Math.round((x - paddingSide) / itemWidth);
     changePosition(selected);
   }
 
